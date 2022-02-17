@@ -6,6 +6,7 @@
     var fontFaces = newFontFaces();
     var images = newImages();
     var globalCanvas;
+    var sourceCache = {};
 
     // Default impl options
     var defaultOptions = {
@@ -601,17 +602,23 @@
         }
 
         function inline(string, url, baseUrl, get) {
-            return Promise.resolve(url)
-                .then(function (url) {
-                    return baseUrl ? util.resolveUrl(url, baseUrl) : url;
-                })
-                .then(get || util.getAndEncode)
-                .then(function (data) {
-                    return util.dataAsUrl(data, util.mimeType(url));
-                })
-                .then(function (dataUrl) {
-                    return string.replace(urlAsRegex(url), '$1' + dataUrl + '$3');
-                });
+            if (sourceCache[url]) {
+                return Promise.resolve(sourceCache[url]);
+            } else {
+                return Promise.resolve(url)
+                    .then(function (url) {
+                        return baseUrl ? util.resolveUrl(url, baseUrl) : url;
+                    })
+                    .then(get || util.getAndEncode)
+                    .then(function (data) {
+                        return util.dataAsUrl(data, util.mimeType(url));
+                    })
+                    .then(function (dataUrl) {
+                        var str = string.replace(urlAsRegex(url), '$1' + dataUrl + '$3');
+                        sourceCache[url] = str;
+                        return str;
+                    });
+            }
 
             function urlAsRegex(url) {
                 return new RegExp('(url\\([\'"]?)(' + util.escape(url) + ')([\'"]?\\))', 'g');
