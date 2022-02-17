@@ -154,7 +154,7 @@
     function draw(domNode, options) {
         return toSvg(domNode, options)
             .then(util.makeImage)
-            .then(util.delay(100))
+            .then(util.delay(1))
             .then(function (image) {
                 var canvas = newCanvas(domNode);
                 canvas.getContext('2d').drawImage(image, 0, 0);
@@ -682,7 +682,7 @@
                         return rule.type === CSSRule.FONT_FACE_RULE;
                     })
                     .filter(function (rule) {
-                        return inliner.shouldProcess(rule.style.getPropertyValue('src'));
+                        // return inliner.shouldProcess(rule.style.getPropertyValue('src'));
                     });
             }
 
