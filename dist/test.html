@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name=renderer content=webkit>
+<title>dom-to-image</title>
+<link rel="stylesheet" href="./mappaint-4c6e8e094c.css">
+<link rel="stylesheet" href="http://at.alicdn.com/t/font_1945507_vuy9x54lgv.css" crossorigin="anonymous" >
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/dist/echarts.min.js"></script>
+
+<style type="text/css">
+    html,
+    body {
+        margin: 0px;
+        height: 100%;
+        width: 100%;
+        padding: 0px;
+    }
+
+    .container {
+        width: 100%;
+        height: 100%
+    }
+</style>
+
+<body>
+    <div class="panel-root" style=" width: 160px; height: 130px;">
+        <div class="panel" style="  background-color: #034097c9; margin: 20px;
+        width: 120px;
+        height: 90px;
+        color: #fff;
+        box-shadow: 0px 0px 20px #ffffff7a;
+
+        border-radius: 5px;">
+            <div class="header" style=" height: 30px;
+            text-align: center;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;">{name}</div>
+            <div class="row" style="display: flex;
+            height: 60px;">
+                <div class="content" style="
+               text-align: center;width: 100%;">
+                    <div class="value" style="font-size: 22px; color: yellow;font-weight: bold;">1234</div>
+                    <div class="unit" style="font-weight: bold;">万元亩</div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="chart" style="width: 500px;height: 400px;">
+
+    </div>
+    <script src="./../src/dom-to-image.js"></script>
+    <script>
+        setTimeout(() => {
+            domtoimage.toPng(document.querySelector('.panel-root')).then(dataUrl => {
+                console.log(dataUrl);
+            })
+            const chart = echarts.init(document.getElementById('chart'));
+            chart.setOption({
+                title: {
+                    text: 'Stacked Area Chart'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
+                legend: {
+                    data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        name: 'Email',
+                        type: 'line',
+                        stack: 'Total',
+                        areaStyle: {},
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [120, 132, 101, 134, 90, 230, 210]
+                    },
+                    {
+                        name: 'Union Ads',
+                        type: 'line',
+                        stack: 'Total',
+                        areaStyle: {},
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [220, 182, 191, 234, 290, 330, 310]
+                    },
+                    {
+                        name: 'Video Ads',
+                        type: 'line',
+                        stack: 'Total',
+                        areaStyle: {},
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [150, 232, 201, 154, 190, 330, 410]
+                    },
+                    {
+                        name: 'Direct',
+                        type: 'line',
+                        stack: 'Total',
+                        areaStyle: {},
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [320, 332, 301, 334, 390, 330, 320]
+                    },
+                    {
+                        name: 'Search Engine',
+                        type: 'line',
+                        stack: 'Total',
+                        label: {
+                            show: true,
+                            position: 'top'
+                        },
+                        areaStyle: {},
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [820, 932, 901, 934, 1290, 1330, 1320]
+                    }
+                ]
+            });
+            setTimeout(() => {
+                domtoimage.toPng(document.getElementById('chart')).then(dataUrl => {
+                    console.log(dataUrl);
+                })
+            }, 1000);
+        }, 1000);
+
+
+    </script>
+</body>
+
+</html>
